@@ -17,7 +17,7 @@ var model = {
     		radius: '500',
     		types: ['store']
   		};
- 		var infowindow = new google.maps.InfoWindow();
+
 	    var service = new google.maps.places.PlacesService(map());
 		service.nearbySearch(request, callback);
 		
@@ -25,8 +25,9 @@ var model = {
 		  if (status == google.maps.places.PlacesServiceStatus.OK) {
 		    for (var i = 0; i < results.length; i++) {
 		      var place = results[i];
+			  console.log(place);
 			  // send results out of the function to the root object
-			  model.place.push(place);
+			  model.places.push(place);
 			  var placeId = results[i].place_id;
 		      createMarker(results[i]);
 		    }
@@ -34,23 +35,41 @@ var model = {
 		}
 		function createMarker(place) {
 		  var placeLoc = place.geometry.location;
+		    var photos = (!place.photos) ? 'images/sample.jpg' : place.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 200});
+			console.log(photos);
 		  var marker = new google.maps.Marker({
 		    map: map(),
-		    position: place.geometry.location
+		    position: place.geometry.location,
+			title: place.name,
+		  });
+		  var infowindow = new google.maps.InfoWindow({
+			 content : '<h4 class="text-center">' + place.name + '</h4>' + '<img src="'+ photos +'" class="img-responsive">'
 		  });
 	  	  google.maps.event.addListener(marker, 'click', function() {
-	      	infowindow.setContent(place.name);
 	   		infowindow.open(map(), this);
 	  		});		  		  			  				
-		}	
+		}
+		//save the map object on the model map property
+		model.map = map();	
 	},
 	// empty string which will hold the results from the nearbySearch
-	place :ko.observableArray([])
+	places :ko.observableArray([]),
+	//entry string to hold map object
+	map : ko.observable()
 };
 
 var ViewModel = function() {
 	var self = this;
+	self.model = {
+		
+	}
+	self.init = {
+		
+	}
 	self.map = ko.observable(model.init());
+	self.places = ko.computed(function(){
+		return model.places();
+	})
 };
 	
 ko.applyBindings(new ViewModel());
