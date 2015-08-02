@@ -6,15 +6,31 @@ var gulp = require('gulp'),
 	htmlreplace = require('gulp-html-replace'),
 	cssmin = require('gulp-minify-css'),
 	htmlmin = require('gulp-htmlmin'),
+	browserSync = require('browser-sync').create(),
 	imagemin = require('gulp-imagemin');
+	
+var reload      = browserSync.reload;
 
-gulp.task('default', ['scripts','html','css','images','watch']);
+gulp.task('default', ['scripts','html','css','images','watch', 'bSync']);
 
 gulp.task('scripts', function(){
 	return gulp.src('src/js/*.js')
-		.pipe(concat('bundle.min.js'))
 		.pipe(uglify())
 		.pipe(gulp.dest('dist/js'))
+});
+
+gulp.task('bSync', ['scripts'], function(){
+	browserSync.init({
+		server: {
+			baseDir: "src/",
+			index: "index.html"
+			}
+		});
+
+	gulp.watch("src/*.html").on("change", browserSync.reload);
+	gulp.watch("src/css/*.css").on("change", browserSync.reload);
+	gulp.watch("src/js/*.js").on("change", browserSync.reload);
+
 });
 
 gulp.task('html', ['scripts'], function (){

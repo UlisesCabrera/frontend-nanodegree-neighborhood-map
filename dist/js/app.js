@@ -1,0 +1,1 @@
+var model={loadMap:function(){{var e={center:{lat:40.8621822,lng:-73.8935974},zoom:18};new google.maps.Map(document.getElementById("mapCanvas"),e)}}},ViewModel=function(){var e=this;e.map=ko.observable(model.loadMap())};ko.applyBindings(new ViewModel);
