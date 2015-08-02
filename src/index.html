@@ -20,8 +20,13 @@
       <div class="row">
         <div class="col-xs-12">
           <h1 class="text-center">Where Would you like to go?</h1>
-          <input class="form-control" id="search" type="text">
+            <input class="form-control" id="search" type="text" placeholder="Add a Place to the Map">
         </div><!--col-xs-12-->
+        <div>
+          <ul class="listPlaces" data-bind="foreach: places">
+            <li data-bind="text: name"></li>
+          </ul>
+        </div>
       </div><!--row-->  
       <div class="row">
         <div class="col-xs-12">
