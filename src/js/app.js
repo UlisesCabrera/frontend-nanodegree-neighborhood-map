@@ -37,8 +37,14 @@ var ViewModel = function() {
 	self.lat = ko.observable(40.8621822);
 	self.lng = ko.observable(-73.8935974);
 	self.init = function() {
-		$('body').append('<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&signed_in=true&key=AIzaSyD-ea-0b-EOXWC6svLpOyxcBKs3ecfe1co&callback=model.loadMap">');
-	}
+		var script = document.createElement('script');
+		$(script).attr("type", "text/javascript");
+		script.onerror = function(e){
+			alert(e);
+		};
+		script.src = "https://maps.googleapis.com/maps/api/js?libraries=places&signed_in=true&key=AIzaSyD-ea-0b-EOXWC6svLpOyxcBKs3ecfe1co&callback=model.loadMap";
+		$('body').append(script);
+	};
 	// empty array that will hold the results from the nearbySearch
 	self.places = ko.observableArray([]);
 	
