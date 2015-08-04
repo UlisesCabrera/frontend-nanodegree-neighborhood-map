@@ -25,7 +25,6 @@ var model = {
 		  if (status == google.maps.places.PlacesServiceStatus.OK) {
 		    for (var i = 0; i < results.length; i++) {	      
 			  vm.places.push(results[i]);
-			  vm.createMarker(vm.places()[i]);
 		    };
 		  };
 		}
@@ -47,7 +46,13 @@ var ViewModel = function() {
 	};
 	// empty array that will hold the results from the nearbySearch
 	self.places = ko.observableArray([]);
-	
+	self.query = ko.observable('');
+	self.search = ko.computed(function(){
+    return ko.utils.arrayFilter(self.places(), function(point){	
+      self.createMarker(point);
+	  return point.name.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
+   		});
+  	});
 	// create markers function from the results of the search
 	self.createMarker = function(place) {
 		  var placeLoc = place.geometry.location;

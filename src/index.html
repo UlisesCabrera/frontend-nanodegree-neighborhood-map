@@ -20,10 +20,10 @@
       <div class="row">
         <div class="col-xs-12">
           <h1 class="text-center">Where Would you like to go?</h1>
-            <input class="form-control" id="search" type="text" placeholder="Add a Place to the Map">
+            <input class="form-control" id="search"  type="search" data-bind="textInput: query, valueUpdate: 'keyup'" placeholder="Filter Results">
         </div><!--col-xs-12-->
         <div>
-          <ul class="listPlaces" data-bind="foreach: places">
+          <ul class="listPlaces" data-bind="foreach: search()">
             <li data-bind="text: name"></li>
           </ul>
         </div>
