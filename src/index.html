@@ -24,9 +24,9 @@
       </div><!--row--> 
       <div class="row">  
         <div class="col-xs-12" id="places">
-          <h3>Places to see <span><input class="form-control" id="search"  type="search" data-bind="textInput: query, valueUpdate: 'keyup'" placeholder="Filter Results"></h3>
+          <h3>Places to see <span><input class="form-control" id="search"  type="search" data-bind="textInput: query, valueUpdate: 'keydown'" placeholder="Filter Results"></h3>
           <ul class="listPlaces" data-bind="foreach: search">
-            <li data-bind="text: name"></li>
+            <li data-bind="text: title"></li>
           </ul>
         </div><!--col-xs-12-->
       </div><!--row-->  
