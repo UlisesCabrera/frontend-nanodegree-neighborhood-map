@@ -20,17 +20,22 @@ var model = {
 	    var service = new google.maps.places.PlacesService(map());
 		service.nearbySearch(request, resultsHandler);
 		
+		//creates the infowindow object and sends it to the VM
+		vm.infowindow(new google.maps.InfoWindow());
+
 		// send results to the ViewModel	
 		function resultsHandler(results, status) {
 		  if (status == google.maps.places.PlacesServiceStatus.OK) {
 		    for (var i = 0; i < results.length; i++) {	      
 			  
 			  vm.places.push(results[i]);
+			  
+			  //creates initial markers
 			  vm.createMarker(results[i]);
 
 		    };
 		  };
-		}
+		};
 	}
 };
 
@@ -39,6 +44,7 @@ var ViewModel = function() {
 	self.lat = ko.observable(40.8621822);
 	self.lng = ko.observable(-73.8935974);
 	
+	//initiates the application by requesting the google map API
 	self.init = function() {
 		var script = document.createElement('script');
 		$(script).attr("type", "text/javascript");
@@ -49,59 +55,65 @@ var ViewModel = function() {
 		$('body').append(script);
 	};
 
+	self.infowindow = ko.observable();
+
 	// empty array that will hold the results from the nearbySearch
 	self.places = ko.observableArray([]);
 	
-	// empty array that will hold the markers
+	// empty array for the initial markers created
 	self.markers = ko.observableArray([]);
-
+	
+	// filtered array 
 	self.query = ko.observable('');
-	//filtered arrays 
 	self.search = ko.computed(function(){
     return ko.utils.arrayFilter(self.markers(), function(point){	
 	  return point.title.toLowerCase().indexOf(self.query().toLowerCase()) >= 0;
    		});
   	});
 
-  	// runs the setMarkers function each time the search array changes
+  	// any time the filtered array changes, it set the currect markers on the map
   	self.search.subscribe(function(){
   		self.setMarkers();
   	});
 
-	// create markers function from the results of the search
+	/*
+		createMarkers function -  Creates initial markers, 
+		sends a copy of each marker created to self.marker,
+		sets the infowindow object to the global variable "infowindow", 
+		check if there are photos available 
+		and adds it to the content of the infowindow. 
+		also, adds click event listener to open the info window of each marker.  
+	*/
 	self.createMarker = function(place) {
-		  // get location from results
 		  var placeLoc = place.geometry.location;
-		  // get photos if they are avaiable
 		  var photos = (!place.photos) ? 'images/sample.jpg' : place.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 200});
-		  // set initial markers based on the restults
 		  var marker = new google.maps.Marker({
 		    map: map(),
 		    position: placeLoc,
 		    animation: google.maps.Animation.DROP,
 			title: place.name
 		  });
-		  //create info window
-		  var infowindow = new google.maps.InfoWindow({
-			 content : '<h4 class="text-center">' + place.name + '</h4>' + '<img src="'+ photos +'" class="img-responsive">'
-		  });
-	  	  // add event listener to the map, when click opens up the info window
-		  google.maps.event.addListener(marker, 'click', function() {
-	   		infowindow.open(map(), this);
-	  		});
-		  //push markers to empty array
-		  self.markers.push(marker);
-		  }
+	  	google.maps.event.addListener(marker, 'click', function() {
+	  		    var infoOptions = {
+				  	content : '<h4 class="text-center">' + marker.title + '</h4>'
+				};
+				self.infowindow().setOptions(infoOptions);
+   				self.infowindow().open(map(), marker);
+  		});				  
+		
+		self.markers.push(marker);
+	};
+
 	//deletes all the markers in the map
 	self.deleteMarkers = function() {
 		for (var i = 0; i < self.markers().length; i++){
 			self.markers()[i].setMap(null);
 		}
-	}
+	};
 	
 	self.setMarkers = function() {
 		/* 
-		Deletes all the markers from map first,
+		deletes all the markers from map first,
 		then check how many markers are in the search array
 		and place them into the map,
 		*/
@@ -110,13 +122,31 @@ var ViewModel = function() {
 			self.search()[i].setMap(map());
 		}
 	};
-	self.bounceMarker = function(marker, event) {
+
+	self.highlightMarker = function(marker, event) {
+	 	/* 
+		make the clicked marker bounce for 7 seconds,
+		if clicked again the bouncing will stop,
+		opens up an info window with information about the current marker
+		*/
+
 		  if (marker.getAnimation() != null) {
 		    marker.setAnimation(null);
 		  } else {
 		    marker.setAnimation(google.maps.Animation.BOUNCE);
 		  }
-	};  		  		  
+		  
+		  window.setTimeout(function(){
+		  	marker.setAnimation(null);
+		  }, 7000);
+
+		  var infoOptions = {
+		  	content : '<h4 class="text-center">' + marker.title + '</h4>'
+		  };
+		  self.infowindow().setOptions(infoOptions);
+		  self.infowindow().open(map(), marker);
+	};
+  
 	self.init();
 };
 
