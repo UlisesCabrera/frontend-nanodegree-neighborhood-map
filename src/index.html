@@ -19,14 +19,24 @@
     <div class="container">
       <div class="row">
         <div class="col-xs-12">
+<<<<<<< HEAD
           <h1 class="text-center">Where Would you like to go?</h1>
             <input class="form-control" id="search"  type="search" data-bind="textInput: query, valueUpdate: 'keyup'" placeholder="Filter Results">
         </div><!--col-xs-12-->
         <div>
           <ul class="listPlaces" data-bind="foreach: search()">
+=======
+          <h1 class="text-center">Welcome to Fordham RD, Bronx NY 10458</h1>
+        </div><!--col-xs-12-->
+      </div><!--row--> 
+      <div class="row">  
+        <div class="col-xs-12" id="places">
+          <h3>Places to see <span><input class="form-control" id="search" type="text" placeholder="Add a Place to the Map"></span></h3>
+          <ul class="listPlaces" data-bind="foreach: places">
+>>>>>>> 3353185c5ba1a0cd0540eeab6001aee02ee4528e
             <li data-bind="text: name"></li>
           </ul>
-        </div>
+        </div><!--col-xs-12-->
       </div><!--row-->  
       <div class="row">
         <div class="col-xs-12">

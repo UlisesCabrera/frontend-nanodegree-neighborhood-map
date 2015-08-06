@@ -3,16 +3,23 @@ h1 {
 }
 
 #search {
- 	margin: 40px auto;
-	 width: 60%;
+	 width: 50%;
+	 display: inline-block;
 }
 
-#mapCanvas {
-	width: 100%; 
-	height: 800px;
+#places {
+	text-align: center;
+	display: block;
+	width: 80%;
+	margin: 40px auto;
+	float: none;
+
 }
 
 .listPlaces {
+	overflow-y: auto;
+	height: 100px;
+	padding: 0;
 	display: flex;
 	flex-direction: row;	
 	flex-wrap: wrap; 
@@ -20,5 +27,14 @@ h1 {
 
 .listPlaces li {
 	list-style: none;
-	margin: 20px;
+	padding: 5px;
+	margin: 5px;
+	border-radius: 10px;
+	background-color: #3cb6e7;
+	color: white;
+}
+
+#mapCanvas {
+	width: 100%; 
+	height: 800px;
 }
