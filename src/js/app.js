@@ -78,6 +78,7 @@ var ViewModel = function() {
 		  var marker = new google.maps.Marker({
 		    map: map(),
 		    position: placeLoc,
+		    animation: google.maps.Animation.DROP,
 			title: place.name
 		  });
 		  //create info window
@@ -108,6 +109,13 @@ var ViewModel = function() {
 		for (var i = 0; i < self.search().length; i++){
 			self.search()[i].setMap(map());
 		}
+	};
+	self.bounceMarker = function(marker, event) {
+		  if (marker.getAnimation() != null) {
+		    marker.setAnimation(null);
+		  } else {
+		    marker.setAnimation(google.maps.Animation.BOUNCE);
+		  }
 	};  		  		  
 	self.init();
 };
