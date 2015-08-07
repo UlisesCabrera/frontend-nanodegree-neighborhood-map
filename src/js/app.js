@@ -95,9 +95,31 @@ var ViewModel = function() {
             animation: google.maps.Animation.DROP,
             title: place.name
         });
+        //getting details about the place to put into the info window
+        var reviewsArray = (!place.reviews) ? [{text: "No review availables"}] : place.reviews;
+        var photo = (!place.photos) ? '<p>Not photos availables</p>' : '<img class="img-responsive center-block" src="' + place.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 200}) + '" alt="location photo"><br/>'
+        var phone = (!place.formatted_phone_number) ? "<p><span>Phone: </span>Not Available</p>"  : '<p><span>Phone: </span>' + place.formatted_phone_number + '</p>';
+        var address = (!place.formatted_address ) ? '<p><span>Address: </span>Not Available</p>' : '<p><span>Address: </span>' + place.formatted_address + '</p>';
+     
+        var reviewHTML = '<h5>Reviews:</h5><ul>' + reviews() + '</ul>';
+        
+        //builds up the list of reviews
+        function reviews () {
+            var reviewList = '';
+            for (var i = 0; i < reviewsArray.length; i++) { 
+                 reviewList += '<li><span><em>'+ reviewsArray[i].author_name +'</em> - </span>'+ reviewsArray[i].text +'<br/>'+ '<span>Rating: </span>'+ reviewsArray[i].rating +'/5</li><br/>';
+            }
+            return reviewList; 
+        };
+
+        //info window content displaying place details from google API
         marker.info = new google.maps.InfoWindow({
-            content: '<h4 class="text-center">' + place.name + '</h4>' +
-                '<p>' + place.vicinity + '</p>'
+            content: '<div class="infowindow"><h4 class="text-center">' + place.name + '</h4>'
+            + photo 
+            + address 
+            + phone 
+            + reviewHTML 
+            +'</div>'
         });
         google.maps.event.addListener(marker, 'click', function() {
             marker.info.open(map(), marker);
