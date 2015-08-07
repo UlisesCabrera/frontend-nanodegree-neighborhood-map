@@ -14,42 +14,35 @@ var model = {
   		// start nearby search request
 		var request = {
     		location: neighborhood(),
-    		radius: '500',
-			openNow: true,
+    		radius: '200',
     		types: ['restaurant']
   		};
 	    var service = new google.maps.places.PlacesService(map());
-		service.nearbySearch(request, resultsHandler);
-		
-		//creates the infowindow object and sends it to the VM
-		vm.infowindow(new google.maps.InfoWindow());
-
+		service.nearbySearch(request, resultsHandler);		
 		// send results to the ViewModel	
 		function resultsHandler(results, status) {
 		  if (status == google.maps.places.PlacesServiceStatus.OK) {
 		    // will hold places Ids
 			var placesId = [];
-			
+			// pushes places id to empty array			
 			for (var i = 0; i < results.length; i++) {	      			  
 			  placesId.push(results[i].place_id);	  
-			  //creates initial markers
-		    };
-			
-			//get places details object
-			for (var i = 0; i < placesId.length; i++){
-				var request = {
+			  // request to get place details
+			  var request = {
 					placeId : placesId[i]
 				};
 				service.getDetails(request, function(place, status){
 					if (status == google.maps.places.PlacesServiceStatus.OK){
-						// pushes places details to vm
+						 //creates initial markers based on place details
 						vm.placesDetails.push(place);
 						vm.createMarker(place);
 					};
-				})
+				})			  
 			};
 		  };
-		};
+	   };
+	   // end nearby search request
+	   
 	}
 };
 
@@ -68,8 +61,6 @@ var ViewModel = function() {
 		script.src = "https://maps.googleapis.com/maps/api/js?libraries=places&signed_in=true&key=AIzaSyD-ea-0b-EOXWC6svLpOyxcBKs3ecfe1co&callback=model.loadMap";
 		$('body').append(script);
 	};
-
-	self.infowindow = ko.observable();
 
 	// empty array that will hold the results from the nearbySearch
 	self.placesDetails = ko.observableArray([]);
@@ -92,9 +83,7 @@ var ViewModel = function() {
 	/*
 		createMarkers function -  Creates initial markers, 
 		sends a copy of each marker created to self.marker,
-		sets the infowindow object to the global variable "infowindow", 
-		check if there are photos available 
-		and adds it to the content of the infowindow. 
+		adds infowindow content to the marker,
 		also, adds click event listener to open the info window of each marker.  
 	*/
 	self.createMarker = function(place) {
@@ -102,6 +91,7 @@ var ViewModel = function() {
 		  var marker = new google.maps.Marker({
 		    map: map(),
 		    position: placeLoc,
+			draggable:true,
 		    animation: google.maps.Animation.DROP,
 			title: place.name
 		  });
