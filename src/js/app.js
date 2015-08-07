@@ -15,7 +15,8 @@ var model = {
 		var request = {
     		location: neighborhood(),
     		radius: '500',
-    		types: ['store']
+			openNow: true,
+    		types: ['restaurant']
   		};
 	    var service = new google.maps.places.PlacesService(map());
 		service.nearbySearch(request, resultsHandler);
@@ -26,14 +27,27 @@ var model = {
 		// send results to the ViewModel	
 		function resultsHandler(results, status) {
 		  if (status == google.maps.places.PlacesServiceStatus.OK) {
-		    for (var i = 0; i < results.length; i++) {	      
-			  
-			  vm.places.push(results[i]);
-			  
+		    // will hold places Ids
+			var placesId = [];
+			
+			for (var i = 0; i < results.length; i++) {	      			  
+			  placesId.push(results[i].place_id);	  
 			  //creates initial markers
-			  vm.createMarker(results[i]);
-
 		    };
+			
+			//get places details object
+			for (var i = 0; i < placesId.length; i++){
+				var request = {
+					placeId : placesId[i]
+				};
+				service.getDetails(request, function(place, status){
+					if (status == google.maps.places.PlacesServiceStatus.OK){
+						// pushes places details to vm
+						vm.placesDetails.push(place);
+						vm.createMarker(place);
+					};
+				})
+			};
 		  };
 		};
 	}
@@ -58,8 +72,7 @@ var ViewModel = function() {
 	self.infowindow = ko.observable();
 
 	// empty array that will hold the results from the nearbySearch
-	self.places = ko.observableArray([]);
-	
+	self.placesDetails = ko.observableArray([]);
 	// empty array for the initial markers created
 	self.markers = ko.observableArray([]);
 	
@@ -86,19 +99,18 @@ var ViewModel = function() {
 	*/
 	self.createMarker = function(place) {
 		  var placeLoc = place.geometry.location;
-		  var photos = (!place.photos) ? 'images/sample.jpg' : place.photos[0].getUrl({'maxWidth': 200, 'maxHeight': 200});
 		  var marker = new google.maps.Marker({
 		    map: map(),
 		    position: placeLoc,
 		    animation: google.maps.Animation.DROP,
 			title: place.name
 		  });
+		  marker.info = new google.maps.InfoWindow({
+			  content : '<h4 class="text-center">' + place.name + '</h4>' + 
+					'<p>' + place.vicinity + '</p>'
+		  });
 	  	google.maps.event.addListener(marker, 'click', function() {
-	  		    var infoOptions = {
-				  	content : '<h4 class="text-center">' + marker.title + '</h4>'
-				};
-				self.infowindow().setOptions(infoOptions);
-   				self.infowindow().open(map(), marker);
+   				marker.info.open(map(), marker);
   		});				  
 		
 		self.markers.push(marker);
@@ -129,7 +141,7 @@ var ViewModel = function() {
 		if clicked again the bouncing will stop,
 		opens up an info window with information about the current marker
 		*/
-
+		  console.log(marker);
 		  if (marker.getAnimation() != null) {
 		    marker.setAnimation(null);
 		  } else {
@@ -140,11 +152,7 @@ var ViewModel = function() {
 		  	marker.setAnimation(null);
 		  }, 7000);
 
-		  var infoOptions = {
-		  	content : '<h4 class="text-center">' + marker.title + '</h4>'
-		  };
-		  self.infowindow().setOptions(infoOptions);
-		  self.infowindow().open(map(), marker);
+		  marker.info.open(map(), marker);
 	};
   
 	self.init();
