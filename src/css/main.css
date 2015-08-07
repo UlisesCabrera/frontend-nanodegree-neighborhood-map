@@ -10,33 +10,46 @@ h1 {
 #places {
 	text-align: center;
 	display: block;
-	width: 80%;
+	width: 100%;
 	margin: 40px auto;
 	float: none;
 
 }
 
+.header {
+	z-index: 1;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	width: 	75%;
+	margin: 0 auto;
+	height: 225px;
+	background-color: rgba(255, 255, 255, .7)
+}
+
 .listPlaces {
 	overflow-y: auto;
-	height: 100px;
+	height: 50px;
 	padding: 0;
 	display: flex;
 	flex-direction: row;	
 	flex-wrap: wrap; 
+	justify-content: space-between;
 }
 
 .listPlaces li {
 	list-style: none;
+	font-size: 1.1em;
 	padding: 5px;
 	margin: 5px;
+	border: 1px solid black;
 	border-radius: 10px;
-	background-color: #3cb6e7;
-	color: white;
 }
 
 #mapCanvas {
 	width: 100%; 
-	height: 800px;
+	height: 1000px;
 }
 .infowindow h4 {
 	text-align: center;
