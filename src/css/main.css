@@ -133,6 +133,12 @@ body {
 	infoWindow
 
 *******************************/
+.infowindow {
+	height: 100%;
+	max-height: 300px;
+	overflow-y: auto;
+}
+
 .infowindow h4 {
 	text-align: center;
 }

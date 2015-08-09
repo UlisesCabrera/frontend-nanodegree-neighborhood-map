@@ -43,6 +43,59 @@ var model = {
         };
         // end nearby search request
 
+    },
+    loadYelp : function() {
+       // nonce generator
+       function nonce_generate() {
+            return (Math.floor(Math.random() * 1e12).toString());
+       }
+       //Yelp Credentials
+       var YELP_KEY = 'd6BWoZe6uqqYl5xoytRWJA';
+       var YELP_KEY_SECRET = 'rEZQsiP5WA_f8kBFCtifxFPzkdU';
+       var YELP_TOKEN = '8PJWa3DOZn0aM4uWY8iL18f9fhV3P1D2';
+       var YELP_TOKEN_SECRET = 'Yu5I-EbDtktQmOBHKhJtLnc9_gc';
+       //Yelp Base URL 
+       var yelpUrl = 'http://api.yelp.com/v2/search';
+       
+       /*
+        Using Marco Bettiolo oauth signature generator
+        https://github.com/bettiolo/oauth-signature-js
+       */
+       
+       //oauth requirements
+       var parameters = {
+                oauth_consumer_key: YELP_KEY,
+                oauth_token: YELP_TOKEN,
+                oauth_nonce: nonce_generate(),
+                oauth_timestamp: Math.floor(Date.now()/1000),
+                oauth_signature_method: 'HMAC-SHA1',
+                oauth_version : '1.0',
+                callback: 'cb',
+                location: 'New York',
+                term: 'food',
+                limit: 3              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+            };
+
+      var encodedSignature = oauthSignature.generate('GET', yelpUrl, parameters, YELP_KEY_SECRET, YELP_TOKEN_SECRET);
+      parameters.oauth_signature = encodedSignature;
+      
+      // Settings for the AJAX Call
+      var settings = {
+            url : yelpUrl,
+            data : parameters,
+            // Must include cache so the default call back function doesnt get add to the URL
+            cache : true,
+            dataType: 'jsonp',
+            success : function(results) {
+                console.log(results);
+            },
+            error: function() {
+               // Do stuff on fail
+               console.log('paso algo')
+           }
+      };
+        // Making the call to YELP
+        $.ajax(settings)
     }
 };
 
