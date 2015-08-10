@@ -1,6 +1,6 @@
 /******************************************
 
-			Off Canvas Menu styles   
+			Off Canvas Div styles   
 
 *******************************************/
 body {
@@ -23,10 +23,22 @@ body {
     transform: translateY(-300px);
 }
 
-.off-canvas-menu.open {
+.off-canvas-external-resources {
+	position: absolute;
+	-webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+	-webkit-transition: -webkit-transform 0.4s ease-out;
+     transition: transform 0.4s ease-out;
+	z-index: 1;	
+	-webkit-transform: translateY(300px);
+    transform: translateY(300px);
+}
+
+.off-canvas-menu.open, .off-canvas-external-resources.open {
 	-webkit-transform: translateY(0);
     transform: translateY(0);
 }
+
 .toggle-menu {
 	position: absolute;
 	left: 25px;
@@ -74,8 +86,6 @@ body {
 ***************************/
 
 .header {
-	z-index: 1;
-	position: fixed;
 	top: 0;
 	left: 0;
 	right: 0;
@@ -127,6 +137,24 @@ body {
 	border: 1px solid black;
 	border-radius: 10px;
 }
+
+
+/******************************
+	
+	External Resources Container
+
+*******************************/
+
+.external-resources-container {
+	z-index: 1;
+	bottom: 0;
+	right: 0;
+	height: 200px;
+	width: 100%;
+	background-color: rgba(255, 255, 255, .7);
+	position: absolute;
+}
+
 
 /******************************
 	

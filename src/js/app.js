@@ -44,7 +44,7 @@ var model = {
         // end nearby search request
 
     },
-    loadYelp : function() {
+    loadYelp : function(businessPhone) {
        // nonce generator
        function nonce_generate() {
             return (Math.floor(Math.random() * 1e12).toString());
@@ -55,7 +55,7 @@ var model = {
        var YELP_TOKEN = '8PJWa3DOZn0aM4uWY8iL18f9fhV3P1D2';
        var YELP_TOKEN_SECRET = 'Yu5I-EbDtktQmOBHKhJtLnc9_gc';
        //Yelp Base URL 
-       var yelpUrl = 'http://api.yelp.com/v2/search';
+       var yelpUrl = 'http://api.yelp.com/v2/phone_search';
        
        /*
         Using Marco Bettiolo oauth signature generator
@@ -70,10 +70,9 @@ var model = {
                 oauth_timestamp: Math.floor(Date.now()/1000),
                 oauth_signature_method: 'HMAC-SHA1',
                 oauth_version : '1.0',
-                callback: 'cb',
-                location: 'New York',
-                term: 'food',
-                limit: 3              // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+                callback: 'cb', // This is crucial to include for jsonp implementation in AJAX or else the oauth-signature will be wrong.
+                phone: businessPhone,
+                limit: 1              
             };
 
       var encodedSignature = oauthSignature.generate('GET', yelpUrl, parameters, YELP_KEY_SECRET, YELP_TOKEN_SECRET);
@@ -88,6 +87,8 @@ var model = {
             dataType: 'jsonp',
             success : function(results) {
                 console.log(results);
+                //sends the first businesses object to the ViewModel
+                vm.YelpDetails(results.businesses[0]);
             },
             error: function() {
                // Do stuff on fail
@@ -114,7 +115,6 @@ var ViewModel = function() {
         script.src = "https://maps.googleapis.com/maps/api/js?libraries=places&signed_in=true&key=AIzaSyD-ea-0b-EOXWC6svLpOyxcBKs3ecfe1co&callback=model.loadMap";
         $('body').append(script);
     };
-
     // empty array that will hold the results from the nearbySearch
     self.placesDetails = ko.observableArray([]);
     // empty array for the initial markers created
@@ -164,7 +164,8 @@ var ViewModel = function() {
             }
             return reviewList; 
         };
-
+        // assigning the phone info to each marker in order to perform a phone search using the YELP api
+        marker.phone = place.formatted_phone_number;
         //info window content displaying place details from google API
         marker.info = new google.maps.InfoWindow({
             content: '<div class="infowindow"><h4 class="text-center">' + place.name + '</h4>'
@@ -174,8 +175,11 @@ var ViewModel = function() {
             + reviewHTML 
             +'</div>'
         });
+        
         google.maps.event.addListener(marker, 'click', function() {
             marker.info.open(map(), marker);
+            //loads the yelp data when clicked
+            model.loadYelp(marker.phone);
         });
 
         self.markers.push(marker);
@@ -216,10 +220,14 @@ var ViewModel = function() {
         window.setTimeout(function() {
             marker.setAnimation(null);
         }, 7000);
-
         marker.info.open(map(), marker);
+        //loads the yelp data when clicked
+        model.loadYelp(marker.phone);
     };
 
+    //Will hold the resutl from the Yelp Search and update the viewModel
+    self.YelpDetails = ko.observable();
+    
     self.init();
 };
 
