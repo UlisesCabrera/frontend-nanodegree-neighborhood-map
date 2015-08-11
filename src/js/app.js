@@ -87,7 +87,6 @@ var model = {
             cache: true,
             dataType: 'jsonp',
             success: function (results) {
-                console.log(results);
                 //sends the first businesses object to the ViewModel
                 vm.YelpDetails(results.businesses[0]);
             },
@@ -181,6 +180,8 @@ var ViewModel = function () {
             marker.info.open(map(), marker);
             //loads the yelp data when clicked
             model.loadYelp(marker.phone);
+            //from ui.js
+                externalToggler();
         });
 
         self.markers.push(marker);
@@ -211,7 +212,6 @@ var ViewModel = function () {
 		if clicked again the bouncing will stop,
 		opens up an info window with information about the current marker
 		*/
-        console.log(marker);
         if (marker.getAnimation() != null) {
             marker.setAnimation(null);
         } else {
@@ -221,7 +221,11 @@ var ViewModel = function () {
         window.setTimeout(function () {
             marker.setAnimation(null);
         }, 7000);
-        marker.info.open(map(), marker);
+        //only opens the info window if the screen width is bigger than 450px, mobile screen gets too crowded
+        if($(window).width() >= 450){
+            marker.info.open(map(), marker);
+        }
+        
         //loads the yelp data when clicked
         model.loadYelp(marker.phone);
     };
