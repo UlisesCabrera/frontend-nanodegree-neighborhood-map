@@ -149,10 +149,29 @@ body {
 	z-index: 1;
 	bottom: 0;
 	right: 0;
-	height: 200px;
+	height: 250px;
 	width: 100%;
 	background-color: rgba(255, 255, 255, .7);
 	position: absolute;
+}
+#yelp {
+	border-right: 2px solid black;
+	height: 100%;
+	overflow-y: auto;
+}
+
+#yelp p {
+	font-weight: bold;
+}
+
+#yelp p span {
+	font-weight: lighter;
+}
+
+.yelp-review-btn {
+	margin-top: 10px;
+	max-width: 100px;
+	width: 100%;
 }
 
 

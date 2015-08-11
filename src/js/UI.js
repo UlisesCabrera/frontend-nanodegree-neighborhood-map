@@ -1,3 +1,4 @@
+/// <reference path="../../typings/jquery/jquery.d.ts"/>
 $(function() {
   $('.toggle-menu').click(function() {
     $('.off-canvas-menu').toggleClass('open');

@@ -31,15 +31,17 @@
           </ul>
         </div><!--col-xs-12-->
       </div><!--row-->  
-      <div class="row">
-        <div class="col-xs-12 external-resources-container">
-          <div id="yelp" data-bind="visible: YelpDetails">
+      <div class="row external-resources-container">
+        <div id="yelp"  class="col-xs-12 col-sm-4" data-bind="visible: YelpDetails">
+            <h2>Review from yelp :</h2>
             <!-- ko with: YelpDetails -->
-            <h3 data-bind="text: name"></h3>    
+            <h3 data-bind="text: name"></h3>
+            <p> Snippet Review: <span data-bind="text: snippet_text"><span></p>
+            <img class="img-responsive" data-bind="attr: {src : rating_img_url }">
+            <a data-bind="attr : {href : url}" target="_blank"><img  class="yelp-review-btn" src="images/yelp-reviews.button.png" alt="review-button"></a>
             <!-- /ko -->
-          </div><!--Yelp Container-->
-        </div><!--external-resources-container-->
-      </div>     
+        </div><!--Yelp Container-->
+      </div><!--external-resources-container-->
       <div class="row">
         <div class="col-xs-12">
             <div id="mapCanvas">      
