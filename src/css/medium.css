@@ -1,0 +1,25 @@
+.main-menu {
+	max-height: 400px;
+}
+
+.main-menu h1 {
+	margin-bottom: 0;
+	margin-top: 80px;
+	text-align: center;
+}
+
+.off-canvas-main-menu {
+	-webkit-transform: translateX(-500px);
+    transform: translateY(-500px);	
+}
+
+.inside-main-menu-btn {
+	left: 0;
+	right: 0;
+	width: 70%;
+	margin: 0 auto;
+}
+
+.open-more-info-btn img {
+	max-width: 150px;
+}

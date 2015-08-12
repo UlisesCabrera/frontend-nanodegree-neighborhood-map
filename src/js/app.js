@@ -1,3 +1,4 @@
+/// <reference path="../../typings/jquery/jquery.d.ts"/>
 /// <reference path="../../typings/knockout/knockout.d.ts"/>
 var map, neighborhood;
 
@@ -16,7 +17,7 @@ var model = {
         var request = {
             location: neighborhood(),
             radius: '200',
-            types: ['restaurant']
+            types: vm.typesOfPlaces()
         };
         var service = new google.maps.places.PlacesService(map());
         service.nearbySearch(request, resultsHandler);
@@ -43,7 +44,6 @@ var model = {
             };
         };
         // end nearby search request
-
     },
     loadYelp: function (businessPhone) {
         // nonce generator
@@ -104,6 +104,7 @@ var ViewModel = function () {
     var self = this;
     self.lat = ko.observable(40.8621822);
     self.lng = ko.observable(-73.8935974);
+    self.typesOfPlaces = ko.observableArray(['restaurant']);
 
     //initiates the application by requesting the google map API
     self.init = function () {
@@ -148,7 +149,7 @@ var ViewModel = function () {
             animation: google.maps.Animation.DROP,
             title: place.name
         });
-        //getting details about the place to put into the info window
+        //get details about the place to put into the info window
         var reviewsArray = (!place.reviews) ? [{ text: "No review availables" }] : place.reviews;
         var photo = (!place.photos) ? '<p>Not photos availables</p>' : '<img class="img-responsive center-block" src="' + place.photos[0].getUrl({ 'maxWidth': 200, 'maxHeight': 200 }) + '" alt="location photo"><br/>'
         var phone = (!place.formatted_phone_number) ? "<p><span>Phone: </span>Not Available</p>" : '<p><span>Phone: </span>' + place.formatted_phone_number + '</p>';
@@ -181,7 +182,7 @@ var ViewModel = function () {
             //loads the yelp data when clicked
             model.loadYelp(marker.phone);
             //from ui.js
-                externalToggler();
+            externalToggler();
         });
 
         self.markers.push(marker);
@@ -222,7 +223,7 @@ var ViewModel = function () {
             marker.setAnimation(null);
         }, 7000);
         //only opens the info window if the screen width is bigger than 450px, mobile screen gets too crowded
-        if($(window).width() >= 450){
+        if ($(window).width() >= 450) {
             marker.info.open(map(), marker);
         }
         
