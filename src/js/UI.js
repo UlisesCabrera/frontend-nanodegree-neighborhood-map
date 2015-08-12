@@ -3,30 +3,33 @@ $(function() {
   /*
   Setting the event listeners for each button
  */
-  $('.toggle-menu').click(function() {
+ 
+  $('.inside-main-menu-btn').on('click', function() {
     menuToggler();
     menuTextToggler();
   });
   
-  $('.toggle-menu.outsideBtn').click(function() {
+  $('.outside-main-menu-btn').on('click', function() {
+    menuToggler();
+    menuTextToggler();
     closeExternalToggler();
-    if($('.off-canvas-external-resources').hasClass('open')){
+    if($('.off-canvas-more-info').hasClass('open')){
       externalContainer();
     }
   });
   
-  $('.listPlaces').on('click','li', function(){
+  $('.list-of-places').on('click','li', function(){
     menuToggler();
     menuTextToggler();
     externalToggler();
   });
   
-  $('.toggle-external').on('click', function(){
+  $('.open-more-info-btn').on('click', function(){
     externalContainer();
     externalToggler();
   });
   
-  $('.close-button').on('click','img', function(){
+  $('.close-more-info-btn').on('click','img', function(){
     externalContainer();
     externalToggler();
   })
@@ -37,26 +40,28 @@ $(function() {
   Set of functions that will handle all the buttons
  */
 function menuTextToggler() {
-  if($('.off-canvas-menu').hasClass('open')){
-    $('.toggle-menu span').text(' Hide Menu');
+  if($('.off-canvas-main-menu').hasClass('open')){
+    $('.outside-main-menu-btn span').text(' Hide menu');
+    $('.inside-main-menu-btn span').text(' Hide menu');
   } else {
-    $('.toggle-menu span').text(' Show Menu');
+    $('.outside-main-menu-btn span').text(' Show menu');
+    $('.inside-main-menu-btn span').text(' Show menu');
   }
 }
 
 function menuToggler() {
-    $('.off-canvas-menu').toggleClass('open');
-    $('.outsideBtn').toggleClass('visible');
+    $('.off-canvas-main-menu').toggleClass('open');
+    $('.outside-main-menu-btn').toggleClass('visible');
 }
 
 function externalToggler() {
-    $('.toggle-external').toggleClass('open');
+    $('.open-more-info-btn').toggleClass('visible');
 }
 
 function closeExternalToggler() {
-  $('.toggle-external').removeClass('open');
+  $('.open-more-info-btn').removeClass('visible');
 }
 
 function externalContainer(){
-  $('.off-canvas-external-resources').toggleClass('open');
+  $('.off-canvas-more-info').toggleClass('open');
 }
