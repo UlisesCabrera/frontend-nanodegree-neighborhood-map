@@ -87,6 +87,7 @@ var model = {
             cache: true,
             dataType: 'jsonp',
             success: function (results) {
+                
                 //sends the first businesses object to the ViewModel
                 vm.YelpDetails(results.businesses[0]);
             },
@@ -97,6 +98,35 @@ var model = {
         };
         // Making the call to YELP
         $.ajax(settings)
+    },
+    loadFlickr :  function(){
+        //base flickerURL
+        var flickrUrl = 'https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=57ab9c626a63ef3d5861ae6f1b0e278a&jsoncallback=?';
+        
+        //making the call to flickr
+        $.getJSON(flickrUrl,{
+            privacy_filter : 1,
+            safe_search : 1,
+            lat : 40.8621822,
+            lon :-73.8935974,
+            format : 'json'
+        }).done(function(data){
+            var photosArray = data.photos.photo;
+            
+            for (var i = 0; i < photosArray.length; i++){   
+                //Getting required info to construct the URL
+                var farmId = photosArray[i].farm;
+                var serverId = photosArray[i].server;
+                var photoId = photosArray[i].id;
+                var secret = photosArray[i].secret;
+                
+                //construct the source URL
+                var imgsUrls ='https://farm'+farmId+'.staticflickr.com/'+serverId+'/'+photoId+'_'+secret+'_z.jpg)';
+                
+                //push imgs urls to the ViewModel
+                vm.flickrPhotos.push(imgsUrls);
+            }
+        });
     }
 };
 
@@ -233,6 +263,9 @@ var ViewModel = function () {
 
     //Will hold the resutl from the Yelp Search and update the viewModel
     self.YelpDetails = ko.observable();
+    
+    //Will hold the resutl from flickr and update the viewModel
+    self.flickrPhotos = ko.observableArray();
 
     self.init();
 };

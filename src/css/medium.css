@@ -6,6 +6,12 @@
 	display: block;
 }
 
+/***************************
+
+Main Menu
+
+***************************/
+
 .main-menu {
 	max-height: 300px;
 }
@@ -26,10 +32,22 @@
 	max-height: 175px;
 }
 
+@media (max-width: 750px) {
+	.list-of-places {
+		max-height: 80px;
+	}
+}
+
 .off-canvas-main-menu {
 	-webkit-transform: translateY(-500px);
     transform: translateY(-500px);	
 }
+
+/***************************************************
+
+Buttons
+
+***************************************************/
 
 .inside-main-menu-btn {
 	left: 0;
@@ -40,10 +58,4 @@
 
 .open-more-info-btn img {
 	max-width: 150px;
-}
-
-@media (max-width: 750px) {
-	.list-of-places {
-		max-height: 80px;
-	}
 }
