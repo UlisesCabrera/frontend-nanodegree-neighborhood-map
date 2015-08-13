@@ -31,6 +31,10 @@ Main Menu
 	margin: 0;
 	padding: 30px;
 }
+.list-of-places {
+	height: 100%;
+	max-height: 600px;
+}
 
 .list-of-places li {
 	display: block;

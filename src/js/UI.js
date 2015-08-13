@@ -9,6 +9,11 @@ $(function() {
     menuTextToggler();
   });
   
+  $('.inside-main-menu-arw').on('click', function(){
+    menuToggler();
+    menuTextToggler();    
+  });
+  
   $('.outside-main-menu-btn').on('click', function() {
     menuToggler();
     menuTextToggler();
