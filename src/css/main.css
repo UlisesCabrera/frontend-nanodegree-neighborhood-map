@@ -217,6 +217,29 @@ YELP Section
 }
 
 /******************************
+	
+Flickr Section
+
+*******************************/
+
+#flickr ul {
+	overflow: scroll;
+	width: 100%;
+	max-height: 225px;
+}
+
+#flickr li {
+	display: inline-block;
+	list-style: none;
+	margin: 5px;
+}
+
+#flickr img {
+	width: 100%;
+	max-width: 100px;
+}
+
+/******************************
 
 InfoWindow Section
 

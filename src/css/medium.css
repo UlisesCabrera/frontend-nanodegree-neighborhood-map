@@ -32,17 +32,6 @@ Main Menu
 	max-height: 175px;
 }
 
-@media (max-width: 750px) {
-	.list-of-places {
-		max-height: 80px;
-	}
-}
-
-.off-canvas-main-menu {
-	-webkit-transform: translateY(-500px);
-    transform: translateY(-500px);	
-}
-
 /***************************************************
 
 Buttons
@@ -58,4 +47,42 @@ Buttons
 
 .open-more-info-btn img {
 	max-width: 150px;
+}
+
+@media (max-width: 765px) {
+	.close-more-info-btn  {
+		top: 40px;
+		right: 25px;
+	}
+	
+	.list-of-places {
+		max-height: 80px;
+	}
+	#yelp, 
+	#flickr {
+		height: 50%;	
+	}
+	
+	.more-info-container {
+		margin: 0;
+		height: 100%;
+		width: 50%;
+		z-index: 3;
+	}
+	
+	.off-canvas-more-info {
+		-webkit-transform: translateX(500px);
+		transform: translateX(500px);
+	}
+	
+	
+	.off-canvas-more-info.open {
+		-webkit-transform: translateX(0);
+		transform: translateX(0);
+	}	
+}
+
+.off-canvas-main-menu {
+	-webkit-transform: translateY(-500px);
+    transform: translateY(-500px);	
 }

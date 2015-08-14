@@ -42,7 +42,7 @@
       </div><!--row-->
       <div class="row more-info-container off-canvas-more-info">
         <a class="close-more-info-btn" href="#"><img c src="images/Button-Close-icon.png"/></a>
-        <div id="yelp" class="col-xs-12 col-sm-6" data-bind="visible: YelpDetails">
+        <div id="yelp" class="col-xs-12 col-sm-6">
           <h2>Review from yelp :</h2>
           <!-- ko with: YelpDetails -->
           <h3 data-bind="text: name"></h3>
@@ -53,6 +53,14 @@
           <a data-bind="attr : {href : url}" target="_blank"><img  class="yelp-review-btn" src="images/yelp-reviews.button.png" alt="review-button"></a>
           <!-- /ko -->
         </div><!--Yelp Section-->
+        <div id="flickr" class="col-xs-12 col-sm-6">
+          <h2>Photos from Flickr of the area:</h2>
+          <ul>
+            <!-- ko foreach: flickrPhotos -->
+            <li><img data-bind="attr: {src : $data }" alt="flickrPhoto"></li>
+            <!-- /ko -->
+          </ul>
+        </div><!--Flickr Section-->
       </div><!--more-info-container-->
       <div class="row">
         <div class="col-xs-12">

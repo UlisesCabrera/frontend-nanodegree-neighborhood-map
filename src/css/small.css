@@ -18,7 +18,6 @@ Main Menu
     transform: translateX(0);
 }
 
-
 .main-menu {
 	max-height: 1000px;
 	height: 100%;
@@ -45,6 +44,10 @@ Main Menu
 Buttons
 
 ***************************************************/
+.close-more-info-btn  {
+	top: 25px;
+	right: 25px;
+}
 
 .outside-main-menu-btn {
 	left: 0;
@@ -79,9 +82,26 @@ a.outside-main-menu-btn img {
 MISC
 
 ***************************************************/
+#yelp, 
+#flickr {
+	height: 50%;	
+}
 
 .more-info-container {
 	margin: 0;
+	height: 100%;
+	z-index: 3;
+}
+
+.off-canvas-more-info {
+	-webkit-transform: translateX(500px);
+    transform: translateX(500px);
+}
+
+
+.off-canvas-more-info.open {
+	-webkit-transform: translateX(0);
+    transform: translateX(0);
 }
 
 #mapCanvas {

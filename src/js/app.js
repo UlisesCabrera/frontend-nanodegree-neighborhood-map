@@ -93,39 +93,58 @@ var model = {
             },
             error: function () {
                 // Do stuff on fail
-                console.log('paso algo')
+                console.log('Something went wrong');
             }
         };
         // Making the call to YELP
         $.ajax(settings)
     },
-    loadFlickr :  function(){
-        //base flickerURL
-        var flickrUrl = 'https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=57ab9c626a63ef3d5861ae6f1b0e278a&jsoncallback=?';
+    loadFlickr :  function(lat, lon){
+        //base flickerURLs
+        var flickrUrlPlaces = 'https://api.flickr.com/services/rest/?&method=flickr.places.findByLatLon&api_key=44ff9d6c0d23eb0ed9189437f0bf1da2&jsoncallback=?';
+        var flickrUrlPhotos = 'https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=44ff9d6c0d23eb0ed9189437f0bf1da2&jsoncallback=?';
         
-        //making the call to flickr
-        $.getJSON(flickrUrl,{
-            privacy_filter : 1,
-            safe_search : 1,
-            lat : 40.8621822,
-            lon :-73.8935974,
+        //getting the place id based on the lat and lon
+        $.getJSON(flickrUrlPlaces,{
+            lat : lat,
+            lon : lon,
+            accuracy : 16,
             format : 'json'
         }).done(function(data){
-            var photosArray = data.photos.photo;
-            
-            for (var i = 0; i < photosArray.length; i++){   
-                //Getting required info to construct the URL
-                var farmId = photosArray[i].farm;
-                var serverId = photosArray[i].server;
-                var photoId = photosArray[i].id;
-                var secret = photosArray[i].secret;
+            //saving the place id into a variable that will be used to search photos
+            var placeId = data.places.place[0].place_id;
                 
-                //construct the source URL
-                var imgsUrls ='https://farm'+farmId+'.staticflickr.com/'+serverId+'/'+photoId+'_'+secret+'_z.jpg)';
-                
-                //push imgs urls to the ViewModel
-                vm.flickrPhotos.push(imgsUrls);
-            }
+            // search for photos around the place id location
+            $.getJSON(flickrUrlPhotos, {
+                format: 'json',
+                place_id : placeId,
+                privacy_filter : 1,
+                accuracy : 16,
+                content_type : 1,
+                per_page : 25
+            }).done(function(data){
+                //clears photos array
+                vm.flickrPhotos.removeAll();
+                var photosArray = data.photos.photo;
+                for (var i = 0; i < photosArray.length; i++){   
+                    //Getting required info to construct the URL
+                    var farmId = photosArray[i].farm;
+                    var serverId = photosArray[i].server;
+                    var photoId = photosArray[i].id;
+                    var secret = photosArray[i].secret;
+                    
+                    //construct the source URL
+                    var imgsUrls ='https://farm'+farmId+'.staticflickr.com/'+serverId+'/'+photoId+'_'+secret+'_m.jpg)';
+                    
+                    //push imgs urls to the ViewModel
+                    vm.flickrPhotos.push(imgsUrls);
+                }
+            }).fail(function(){
+                console.log('something went wrong getting the photos')
+            })
+
+        }).fail(function(){
+            console.log('something went wrong getting the place location')
         });
     }
 };
@@ -197,6 +216,9 @@ var ViewModel = function () {
         };
         // assigning the phone info to each marker in order to perform a phone search using the YELP api
         marker.phone = place.formatted_phone_number;
+        //assigning lat and lon to do a flickr search around the mark location
+        marker.lat = place.geometry.location.G;
+        marker.lon = place.geometry.location.K;
         //info window content displaying place details from google API
         marker.info = new google.maps.InfoWindow({
             content: '<div class="infowindow"><h4 class="text-center">' + place.name + '</h4>'
@@ -211,6 +233,8 @@ var ViewModel = function () {
             marker.info.open(map(), marker);
             //loads the yelp data when clicked
             model.loadYelp(marker.phone);
+            //loads flicker photos when clicked
+            model.loadFlickr(marker.lat, marker.lon);
             //from ui.js
             externalToggler();
         });
@@ -259,6 +283,9 @@ var ViewModel = function () {
         
         //loads the yelp data when clicked
         model.loadYelp(marker.phone);
+        
+        //loads flicker photos when clicked
+        model.loadFlickr(marker.lat, marker.lon);
     };
 
     //Will hold the resutl from the Yelp Search and update the viewModel
