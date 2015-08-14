@@ -10,7 +10,53 @@ var model = {
         });
         map = ko.observable(new google.maps.Map(document.getElementById('mapCanvas'), {
             center: neighborhood(),
-            zoom: 17
+            zoom: 17,
+            styles: [
+                {
+                    "featureType": "road",
+                    "elementType": "labels.text",
+                    "stylers": [
+                        { "visibility": "simplified" },
+                        { "hue": "#ff1100" },
+                        { "color": "#ff0c59" },
+                        { "weight": 0.3 },
+                        { "lightness": -79 },
+                        { "gamma": 1.13 }
+                    ]
+                }, {
+                    "featureType": "landscape.man_made",
+                    "elementType": "geometry",
+                    "stylers": [
+                        { "visibility": "simplified" },
+                        { "color": "#e8edf6" },
+                        { "lightness": -21 },
+                        { "gamma": 6.98 }
+                    ]
+                }, {
+                    "featureType": "road.highway",
+                    "stylers": [
+                        { "visibility": "simplified" },
+                        { "color": "#433540" },
+                        { "lightness": 71 }
+                    ]
+                }, {
+                    "featureType": "road.local",
+                    "stylers": [
+                        { "visibility": "simplified" },
+                        { "color": "#8659b8" },
+                        { "gamma": 5.3 },
+                        { "lightness": 37 }
+                    ]
+                }, {
+                    "featureType": "poi.park",
+                    "stylers": [
+                        { "visibility": "simplified" },
+                        { "color": "#b5d1d8" },
+                        { "lightness": 23 }
+                    ]
+                }, {
+                }
+            ]
         }));
 
         // start nearby search request
@@ -99,34 +145,34 @@ var model = {
         // Making the call to YELP
         $.ajax(settings)
     },
-    loadFlickr :  function(lat, lon){
+    loadFlickr: function (lat, lon) {
         //base flickerURLs
         var flickrUrlPlaces = 'https://api.flickr.com/services/rest/?&method=flickr.places.findByLatLon&api_key=44ff9d6c0d23eb0ed9189437f0bf1da2&jsoncallback=?';
         var flickrUrlPhotos = 'https://api.flickr.com/services/rest/?&method=flickr.photos.search&api_key=44ff9d6c0d23eb0ed9189437f0bf1da2&jsoncallback=?';
         
         //getting the place id based on the lat and lon
-        $.getJSON(flickrUrlPlaces,{
-            lat : lat,
-            lon : lon,
-            accuracy : 16,
-            format : 'json'
-        }).done(function(data){
+        $.getJSON(flickrUrlPlaces, {
+            lat: lat,
+            lon: lon,
+            accuracy: 16,
+            format: 'json'
+        }).done(function (data) {
             //saving the place id into a variable that will be used to search photos
             var placeId = data.places.place[0].place_id;
                 
             // search for photos around the place id location
             $.getJSON(flickrUrlPhotos, {
                 format: 'json',
-                place_id : placeId,
-                privacy_filter : 1,
-                accuracy : 16,
-                content_type : 1,
-                per_page : 25
-            }).done(function(data){
+                place_id: placeId,
+                privacy_filter: 1,
+                accuracy: 16,
+                content_type: 1,
+                per_page: 25
+            }).done(function (data) {
                 //clears photos array
                 vm.flickrPhotos.removeAll();
                 var photosArray = data.photos.photo;
-                for (var i = 0; i < photosArray.length; i++){   
+                for (var i = 0; i < photosArray.length; i++) {   
                     //Getting required info to construct the URL
                     var farmId = photosArray[i].farm;
                     var serverId = photosArray[i].server;
@@ -134,16 +180,16 @@ var model = {
                     var secret = photosArray[i].secret;
                     
                     //construct the source URL
-                    var imgsUrls ='https://farm'+farmId+'.staticflickr.com/'+serverId+'/'+photoId+'_'+secret+'_m.jpg)';
+                    var imgsUrls = 'https://farm' + farmId + '.staticflickr.com/' + serverId + '/' + photoId + '_' + secret + '_m.jpg)';
                     
                     //push imgs urls to the ViewModel
                     vm.flickrPhotos.push(imgsUrls);
                 }
-            }).fail(function(){
+            }).fail(function () {
                 console.log('something went wrong getting the photos')
             })
 
-        }).fail(function(){
+        }).fail(function () {
             console.log('something went wrong getting the place location')
         });
     }
@@ -196,7 +242,8 @@ var ViewModel = function () {
             position: placeLoc,
             draggable: true,
             animation: google.maps.Animation.DROP,
-            title: place.name
+            title: place.name,
+            icon : 'images/map-marker.png'
         });
         //get details about the place to put into the info window
         var reviewsArray = (!place.reviews) ? [{ text: "No review availables" }] : place.reviews;
