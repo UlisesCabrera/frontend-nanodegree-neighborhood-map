@@ -12,6 +12,19 @@ body {
 	display: block;
 }
 
+.error-img {
+	width: 100% !important; /* using important to override flickr default images styles*/
+	max-width: 250px !important;
+}
+.map-error {
+	position: absolute;
+	z-index: 3;
+}
+
+.error-img-big {
+	width: 100%;
+}
+
 /***************************************************
 
 Off Canvas Styles
