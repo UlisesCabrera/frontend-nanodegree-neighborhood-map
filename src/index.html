@@ -4,7 +4,7 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
     <title>Neighborhood Map</title>
     <link href="css/normalize.css" rel="stylesheet">
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -48,7 +48,7 @@
             <!-- ko with: YelpDetails -->
             <h3 data-bind="text: name"></h3>
             <p>Snippet Review:
-              <span data-bind="text: snippet_text"><span>
+              <span data-bind="text: snippet_text"></span>
             </p>
             <img class="img-responsive" data-bind="attr: {src : rating_img_url }">
             <a data-bind="attr : {href : url}" target="_blank"><img  class="yelp-review-btn" src="images/yelp-reviews.button.png" alt="review-button"></a>

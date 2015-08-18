@@ -50,6 +50,7 @@ Buttons
 }
 
 @media (max-width: 765px) {
+	
 	.close-more-info-btn  {
 		top: 40px;
 		right: 25px;
