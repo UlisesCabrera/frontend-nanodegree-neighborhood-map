@@ -2,3 +2,5 @@ node_modules/
 ngrok.exe
 .settings
 typings
+gulpfile.js~
+ngrok
