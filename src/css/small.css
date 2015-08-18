@@ -1,0 +1,109 @@
+.container-fluid {
+	padding: 0;
+}
+
+/***************************
+
+Main Menu
+
+***************************/
+.off-canvas-main-menu {
+	height: 100%;
+	-webkit-transform: translateX(-500px);
+    transform: translateX(-500px);
+}
+
+.off-canvas-main-menu.open {
+	-webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+.main-menu {
+	max-height: 1000px;
+	height: 100%;
+	width: 100%;
+	text-align: center;
+	padding: 10px;
+}
+
+.main-menu h1 {
+	margin: 0;
+	padding: 30px;
+}
+.list-of-places {
+	height: 100%;
+	max-height: 600px;
+}
+
+.list-of-places li {
+	display: block;
+}
+
+/***************************************************
+
+Buttons
+
+***************************************************/
+.close-more-info-btn  {
+	top: 25px;
+	right: 25px;
+}
+
+.outside-main-menu-btn {
+	left: 0;
+	right: 0;
+	top: 25px;
+	width: 150px;
+	margin: 0 auto;
+}
+
+a.outside-main-menu-btn img {
+	float: left;
+	margin-right: 10px;
+}
+
+.outside-main-menu-btn.visible {
+	-webkit-transform: translateY(-15px);
+    transform: translateY(-15px);
+}
+
+.inside-main-menu-btn {
+	right: 10%;
+	top:0;
+	width: 30px;
+}
+
+.open-more-info-btn img {
+	max-width: 100px;
+}
+
+/***************************************************
+
+MISC
+
+***************************************************/
+#yelp, 
+#flickr {
+	height: 50%;	
+}
+
+.more-info-container {
+	margin: 0;
+	height: 100%;
+	z-index: 3;
+}
+
+.off-canvas-more-info {
+	-webkit-transform: translateX(500px);
+    transform: translateX(500px);
+}
+
+
+.off-canvas-more-info.open {
+	-webkit-transform: translateX(0);
+    transform: translateX(0);
+}
+
+#mapCanvas {
+	height: 600px;
+}

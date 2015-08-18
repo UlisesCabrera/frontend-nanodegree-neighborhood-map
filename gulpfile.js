@@ -1,4 +1,4 @@
-//npm install gulp gulp-uglify gulp-htmlmin gulp-html-replace gulp-minify-css gulp-concat gulp-rename gulp-imagemin --save-dev
+//npm install gulp gulp-uglify gulp-htmlmin gulp-html-replace gulp-minify-css gulp-concat gulp-rename gulp-imagemin browser-sync --save-dev
 var gulp = require('gulp'), 
 	uglify = require('gulp-uglify'),
 	concat = require('gulp-concat'),
