@@ -210,7 +210,6 @@ YELP Section
 *******************************/
 
 #yelp {
-	border-right: 2px dotted crimson;
 	height: 100%;
 	overflow-y: auto;
 }
