@@ -1,5 +1,4 @@
 /* global google */
-/* global externalToggler */
 /// <reference path="../../typings/jquery/jquery.d.ts"/>
 /// <reference path="../../typings/knockout/knockout.d.ts"/>
 var map, neighborhood;
@@ -316,6 +315,11 @@ var ViewModel = function () {
             + reviewHTML
             + '</div>'
         });
+        
+        // hides more info button when infoWindow is closed.
+        google.maps.event.addDomListener(marker.info,'closeclick',function(){
+            closeMoreInfoToggler();
+        });
 
         google.maps.event.addListener(marker, 'click', function () {
             // closes any infowindow opened before
@@ -330,7 +334,7 @@ var ViewModel = function () {
             // loads flicker photos when clicked
             model.loadFlickr(marker.lat, marker.lon);
             // function from ui.js
-            externalToggler();
+            moreInfoToggler();
         });
 
         self.markers.push(marker);

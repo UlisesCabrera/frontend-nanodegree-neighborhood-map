@@ -2,6 +2,10 @@
 	padding: 0;
 }
 
+.row {
+	margin: 0;
+}
+
 /***************************
 
 Main Menu
@@ -85,7 +89,7 @@ MISC
 
 
 #flickr ul {
-	max-height: 225px;
+	max-height: 200px;
 }
 
 .more-info-container {
