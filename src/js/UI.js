@@ -17,29 +17,19 @@ $(function() {
   $('.outside-main-menu-btn').on('click', function() {
     menuToggler();
     menuTextToggler();
-    closeExternalToggler();
-    if($('.off-canvas-more-info').hasClass('open')){
-      externalContainer();
-    }
+    closeMoreInfoToggler();
   });
   
   $('.list-of-places').on('click','li', function(){
     menuToggler();
     menuTextToggler();
-    externalToggler();
-  });
-  
-  $('.open-more-info-btn').on('click', function(){
-    externalContainer();
-    externalToggler();
+    moreInfoToggler();
   });
   
   $('.close-more-info-btn').on('click','img', function(){
-    externalContainer();
-    externalToggler();
+      $('#more-info-modal').modal('hide')
   })
 });
-
 
 /*
   Set of functions that will handle all the buttons
@@ -59,14 +49,10 @@ function menuToggler() {
     $('.outside-main-menu-btn').toggleClass('visible');
 }
 
-function externalToggler() {
+function moreInfoToggler() {
     $('.open-more-info-btn').toggleClass('visible');
 }
 
-function closeExternalToggler() {
+function closeMoreInfoToggler() {
   $('.open-more-info-btn').removeClass('visible');
-}
-
-function externalContainer(){
-  $('.off-canvas-more-info').toggleClass('open');
 }

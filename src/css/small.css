@@ -82,28 +82,15 @@ a.outside-main-menu-btn img {
 MISC
 
 ***************************************************/
-#yelp, 
-#flickr {
-	height: 50%;	
+
+
+#flickr ul {
+	max-height: 225px;
 }
 
 .more-info-container {
+	background-color: rgba(255, 255, 255, 0.85);
 	margin: 0;
-	height: 100%;
-	z-index: 3;
-}
-
-.off-canvas-more-info {
-	-webkit-transform: translateX(500px);
-    transform: translateX(500px);
-}
-
-
-.off-canvas-more-info.open {
-	-webkit-transform: translateX(0);
-    transform: translateX(0);
-}
-
-#mapCanvas {
-	height: 600px;
+	width: 100vw;
+	height: 100vh;
 }
