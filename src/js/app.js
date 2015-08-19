@@ -84,8 +84,9 @@ var model = {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 // will hold places Ids
                 var placesId = [];
+                var resultsLength = results.length;
                 // pushes places id to empty array			
-                for (var i = 0; i < results.length; i++) {
+                for (var i = 0; i < resultsLength; i++) {
                     placesId.push(results[i].place_id);
                     // request to get place details
                     var request = {
@@ -246,13 +247,12 @@ var ViewModel = function () {
     // initiates the application by requesting the google map API
     self.init = function () {
         var script = document.createElement('script');
-        $(script).attr("type", "text/javascript");
         script.src = "https://maps.googleapis.com/maps/api/js?libraries=places&signed_in=true&key=AIzaSyD-ea-0b-EOXWC6svLpOyxcBKs3ecfe1co&callback=model.loadMap";
         $('body').append(script);
     };
       
     // empty array for the initial markers created
-    self.markers = ko.observableArray([]);
+    self.markers = ko.observableArray();
 
     // filtered array 
     self.query = ko.observable('');
@@ -294,7 +294,8 @@ var ViewModel = function () {
         // builds up the list of reviews
         function reviews() {
             var reviewList = '';
-            for (var i = 0; i < reviewsArray.length; i++) {
+            var reviewsLength = reviewsArray.length;
+            for (var i = 0; i < reviewsLength ; i++) {
                 reviewList += '<li><span><em>' + reviewsArray[i].author_name + '</em> - </span>' + reviewsArray[i].text + '<br/>' + '<span>Rating: </span>' + reviewsArray[i].rating + '/5</li><br/>';
             }
             return reviewList;
@@ -317,6 +318,12 @@ var ViewModel = function () {
         });
 
         google.maps.event.addListener(marker, 'click', function () {
+            // closes any infowindow opened before
+            var selfMarkersLength = self.markers().length;
+            for (var i = 0; i < selfMarkersLength; i++) {
+                self.markers()[i].info.close();
+            }
+            
             marker.info.open(map(), marker);
             // loads the yelp data when clicked
             model.loadYelp(marker.phone);
@@ -331,7 +338,8 @@ var ViewModel = function () {
 
     // deletes all the markers in the map
     self.deleteMarkers = function () {
-        for (var i = 0; i < self.markers().length; i++) {
+        var selfMarkersLength = self.markers().length;
+        for (var i = 0; i < selfMarkersLength; i++) {
             self.markers()[i].setMap(null);
         }
     };
@@ -343,7 +351,8 @@ var ViewModel = function () {
         and place them into the map
         */
         self.deleteMarkers();
-        for (var i = 0; i < self.search().length; i++) {
+        var selfSearchLength = self.search().length;
+        for (var i = 0; i < selfSearchLength; i++) {
             self.search()[i].setMap(map());
         }
     };
@@ -365,6 +374,13 @@ var ViewModel = function () {
         }, 7000);
         //only opens the info window if the screen width is bigger than 450px, mobile screen gets too crowded
         if ($(window).width() >= 450) {
+            
+            // closes any infowindow opened before
+            var selfMarkersLength = self.markers().length;
+            for (var i = 0; i < selfMarkersLength; i++) {
+                self.markers()[i].info.close();
+            }
+
             marker.info.open(map(), marker);
         }
         

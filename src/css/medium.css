@@ -50,6 +50,7 @@ Buttons
 }
 
 @media (max-width: 765px) {
+	
 	.close-more-info-btn  {
 		top: 40px;
 		right: 25px;
@@ -62,24 +63,6 @@ Buttons
 	#flickr {
 		height: 50%;	
 	}
-	
-	.more-info-container {
-		margin: 0;
-		height: 100%;
-		width: 50%;
-		z-index: 3;
-	}
-	
-	.off-canvas-more-info {
-		-webkit-transform: translateX(500px);
-		transform: translateX(500px);
-	}
-	
-	
-	.off-canvas-more-info.open {
-		-webkit-transform: translateX(0);
-		transform: translateX(0);
-	}	
 }
 
 .off-canvas-main-menu {
