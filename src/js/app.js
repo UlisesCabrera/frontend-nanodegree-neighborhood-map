@@ -157,7 +157,7 @@ var model = {
             // sends the first businesses object to the ViewModel
             vm.YelpDetails(results.businesses[0]);
         }).fail(function () {
-            if ($('#yelp.more-info-error').length === 0) {
+            if ($('#yelp .more-info-error').length === 0) {
                 $('#yelp .innerWrapper').hide();
                 $('#yelp').append('<div class="more-info-error"><img class="error-img img-responsive center-block" src="images/error.jpg" alt="error image"><h3 class="text-center">oops something went wrong with YELP</h3></div>');
             } else {
